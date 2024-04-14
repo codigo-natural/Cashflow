@@ -73,6 +73,24 @@
           description: "Reparación equipo",
           amount: "1000",
         },
+        {
+          id: 6,
+          title: "Movimiento 6",
+          description: "Reparación equipo",
+          amount: "1000",
+        },
+        {
+          id: 7,
+          title: "Movimiento 7",
+          description: "Reparación equipo",
+          amount: "10000",
+        },
+        {
+          id: 8,
+          title: "Movimiento 8",
+          description: "Reparación equipo",
+          amount: "1000",
+        },
       ],
       }
     }
