@@ -10,7 +10,7 @@
         :amount="amount"
       >
         <template #graphic>
-          <Graphic />
+          <Graphic :amounts="amounts" />
         </template>
         <template #action>
           <Action />
@@ -44,8 +44,9 @@
     },
     data() {
       return {
+        label: null,
         amount: null,
-        label: 'Ahorro total',
+        amounts: [100, 200, 500, 200, -300, -600, 700, 0, 200, 500 -400],
         movements: [
         {
           id: 1,
