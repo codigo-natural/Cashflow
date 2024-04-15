@@ -5,9 +5,9 @@
       stroke="#c4c4c4"
       stroke-width="2"
       x1="0"
-      y1="100"
+      :y1="zero"
       x2="300"
-      y2="100"
+      :y2="zero"
     />
       <polyline 
         fill="none"
@@ -25,7 +25,6 @@
       />
     </svg>
     <p>Últimos 30 días</p>
-    <p>{{ points }}</p>
   </div>
 </template>
 
@@ -45,18 +44,24 @@
     const min = Math.min(...amounts.value)
     const max = Math.max(...amounts.value)
 
-    return `${min}, ${max}`
+    const amountAbs = amount + Math.abs(min)
+    const minmax = Math.abs(max) + Math.abs(min)
+
+    return 200 - ((amountAbs * 100) / minmax) * 2
   }
 
-const points = computed(() => {
-  const total = amounts.value.length 
-  return Array(total).fill(100).reduce((points, amount, i) => {
-    const x = (300 / total) * (i + 1)
-    const y = amountToPixels(amount)
-    console.log(y)
-    return `${points} ${x},${y}`
-  }, "0, 100")
-})
+  const zero = computed(() => {
+    return amountToPixels(0)
+  })
+
+  const points = computed(() => {
+    const total = amounts.value.length 
+    return amounts.value.reduce((points, amount, i) => {
+      const x = (300 / total) * (i + 1)
+      const y = amountToPixels(amount)
+      return `${points} ${x},${y}`
+    }, "0, 100")
+  })
 
 </script>
 
