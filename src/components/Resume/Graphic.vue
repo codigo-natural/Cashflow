@@ -1,6 +1,11 @@
 <template>
   <div>
-    <svg viewBox="0 0 300 200">
+    <svg 
+      @touchstart="tap"
+      @touchmove="tap"
+      @touchend="untap"
+      viewBox="0 0 300 200"
+    >
       <line 
       stroke="#c4c4c4"
       stroke-width="2"
@@ -9,18 +14,19 @@
       x2="300"
       :y2="zero"
     />
-      <polyline 
+      <polyline
         fill="none"
         stroke="#068980"
         stroke-width="2"
         :points="points"
       />
-      <line 
+      <line
+        v-show="showPointer"
         stroke="#068980"
         stroke-width="2"
-        x1="200"
+        :x1="pointer"
         y1="0"
-        x2="200"
+        :x2="pointer"
         y2="200"
       />
     </svg>
@@ -29,7 +35,7 @@
 </template>
 
 <script setup>
-  import { toRefs, defineProps, computed } from 'vue';
+  import { ref, toRefs, defineProps, computed } from 'vue';
 
   const props = defineProps({
     amounts: {
@@ -62,6 +68,21 @@
       return `${points} ${x},${y}`
     }, "0, 100")
   })
+
+  const showPointer = ref(false)
+  const pointer = ref(0)
+
+  const tap = ({ target, touches }) => {
+    showPointer.value = true;
+    const elementWidth = target.getBoundingClientRect().width;
+    const elementX = target.getBoundingClientRect().x;
+    const touchX = touches[0].clientX
+    pointer.value = ((touchX - elementX) * 300) / elementWidth
+  }
+
+  const untap = () => {
+    showPointer.value = false
+  }
 
 </script>
 
