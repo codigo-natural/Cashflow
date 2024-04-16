@@ -5,8 +5,9 @@
     </template>
     <template #resume>
       <Resume 
+        :total-label="'ahorro total'"
         :label="label"
-        :total-amount="100000"
+        :total-amount="10000"
         :amount="amount"
       >
         <template #graphic>
@@ -18,9 +19,7 @@
       </Resume>
     </template>
     <template #movements>
-      <Movements 
-        :movements="movements"
-      />
+      <Movements :movements="movements" />
     </template>
   </Layout>
 </template>
@@ -41,63 +40,111 @@
       Action,
       Movements,
       Graphic
-    },
+  },
     data() {
       return {
         label: null,
         amount: null,
-        amounts: [50, 200, 300, 200, -100, -200, 400, 60, 200, 300 -100],
         movements: [
-        {
-          id: 1,
-          title: "Movimiento",
-          description: "Deposito de salario",
-          amount: "1000",
-        },
-        {
-          id: 2,
-          title: "Movimiento 1",
-          description: "Deposito de honorarios",
-          amount: "500",
-        },
-        {
-          id: 3,
-          title: "Movimiento 3",
-          description: "Comida",
-          amount: "-100",
-        },
-        {
-          id: 4,
-          title: "Movimiento 4",
-          description: "Colegiatura",
-          amount: "1000",
-        },
-        {
-          id: 5,
-          title: "Movimiento 5",
-          description: "Reparación equipo",
-          amount: "1000",
-        },
-        {
-          id: 6,
-          title: "Movimiento 6",
-          description: "Reparación equipo",
-          amount: "1000",
-        },
-        {
-          id: 7,
-          title: "Movimiento 7",
-          description: "Reparación equipo",
-          amount: "10000",
-        },
-        {
-          id: 8,
-          title: "Movimiento 8",
-          description: "Reparación equipo",
-          amount: "1000",
-        },
-      ],
+          {
+            id: 1,
+            title: "Movimiento",
+            description: "Deposito de salario",
+            amount: 1000,
+            time: new Date("03-03-2024")
+          },
+          {
+            id: 2,
+            title: "Movimiento 1",
+            description: "Deposito de honorarios",
+            amount: 5000,
+            time: new Date("03-03-2024")
+          },
+          {
+            id: 3,
+            title: "Movimiento 3",
+            description: "Comida",
+            amount: 3000,
+            time: new Date("03-03-2024")
+          },
+          {
+            id: 4,
+            title: "Movimiento 4",
+            description: "Colegiatura",
+            amount: -1000,
+            time: new Date("03-03-2024")
+          },
+          {
+            id: 5,
+            title: "Movimiento 5",
+            description: "Reparación equipo",
+            amount: 4000,
+            time: new Date("03-03-2024")
+          },
+          {
+            id: 6,
+            title: "Movimiento 6",
+            description: "Reparación equipo",
+            amount: 2000,
+            time: new Date("03-03-2024")
+          },
+          {
+            id: 7,
+            title: "Movimiento 7",
+            description: "Reparación equipo",
+            amount: -3000,
+            time: new Date("04-04-2024")
+          },
+          {
+            id: 8,
+            title: "Movimiento 8",
+            description: "Reparación equipo",
+            amount: 6000,
+            time: new Date("04-04-2024")
+          },
+          {
+            id: 9,
+            title: "Movimiento 9",
+            description: "Reparación equipo",
+            amount: -3000,
+            time: new Date("04-04-2024")
+          },
+          {
+            id: 10,
+            title: "Movimiento 10",
+            description: "Reparación equipo",
+            amount: 1000,
+            time: new Date("04-04-2024")
+          },
+          {
+            id: 11,
+            title: "Movimiento 11",
+            description: "Reparación equipo",
+            amount: -4000,
+            time: new Date("04-04-2024")
+          },
+        ],
+      };
+    },
+    computed: {
+      amounts() {
+        const lastDays = this.movements
+          .filter(m => {
+            const today = new Date();
+            const oldDate = today.setDate(today.getDate() - 30);
+
+            return m.time > oldDate;
+          })
+          .map(m => m.amount);
+
+        return lastDays.map((m, i) => {
+          const lastMovements = lastDays.slice(0, i)
+          
+          return lastMovements.reduce((suma, movement) => {
+            return suma + movement
+          }, 0)
+        });
       }
-    }
-  }
+    },
+  };
 </script>
