@@ -7,7 +7,7 @@
       <Resume 
         :total-label="'ahorro total'"
         :label="label"
-        :total-amount="10000"
+        :total-amount="totalAmount"
         :amount="amount"
       >
         <template #graphic>
@@ -48,85 +48,7 @@
       return {
         label: null,
         amount: null,
-        movements: [
-          {
-            id: 1,
-            title: "Movimiento",
-            description: "Deposito de salario",
-            amount: 1000,
-            time: new Date("03-03-2024")
-          },
-          {
-            id: 2,
-            title: "Movimiento 1",
-            description: "Deposito de honorarios",
-            amount: 5000,
-            time: new Date("03-03-2024")
-          },
-          {
-            id: 3,
-            title: "Movimiento 3",
-            description: "Comida",
-            amount: 3000,
-            time: new Date("03-03-2024")
-          },
-          {
-            id: 4,
-            title: "Movimiento 4",
-            description: "Colegiatura",
-            amount: -1000,
-            time: new Date("03-03-2024")
-          },
-          {
-            id: 5,
-            title: "Movimiento 5",
-            description: "Reparación equipo",
-            amount: 4000,
-            time: new Date("03-03-2024")
-          },
-          {
-            id: 6,
-            title: "Movimiento 6",
-            description: "Reparación equipo",
-            amount: 2000,
-            time: new Date("03-03-2024")
-          },
-          {
-            id: 7,
-            title: "Movimiento 7",
-            description: "Reparación equipo",
-            amount: -3000,
-            time: new Date("04-04-2024")
-          },
-          {
-            id: 8,
-            title: "Movimiento 8",
-            description: "Reparación equipo",
-            amount: 6000,
-            time: new Date("04-04-2024")
-          },
-          {
-            id: 9,
-            title: "Movimiento 9",
-            description: "Reparación equipo",
-            amount: -3000,
-            time: new Date("04-04-2024")
-          },
-          {
-            id: 10,
-            title: "Movimiento 10",
-            description: "Reparación equipo",
-            amount: 1000,
-            time: new Date("04-04-2024")
-          },
-          {
-            id: 11,
-            title: "Movimiento 11",
-            description: "Reparación equipo",
-            amount: -4000,
-            time: new Date("04-04-2024")
-          },
-        ],
+        movements: [],
       };
     },
     computed: {
@@ -147,15 +69,35 @@
             return suma + movement
           }, 0)
         });
+      },
+      totalAmount() {
+        return this.movements.reduce((suma, m) => {
+          return suma + m.amount;
+        }, 0)
+      }
+    },
+    mounted() {
+      const movements = JSON.parse(localStorage.getItem("movements"));
+      console.log(movements)
+
+      if (Array.isArray(movements)) {
+        this.movements = movements.map(m => {
+          return { ...m, time: new Date(m.time)};
+        });
       }
     },
     methods: {
       create(movement) {
         this.movements.push(movement)
+        this.save();
       },
       remove(id) {
         const index = this.movements.findIndex(m => m.id === id);
         this.movements.splice(index, 1)
+        this.save();
+      },
+      save() {
+        localStorage.setItem("movements", JSON.stringify(this.movements))
       }
     }
   };
